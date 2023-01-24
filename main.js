@@ -105,3 +105,42 @@ var myChart = new Chart(ctx, {
   }
 });
 
+////////////// CHART 3:
+
+var dataPoints = [];
+var chart;
+chart = new Chart(canvasZero, {
+  type: "line",
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: "Live Chart",
+        data: [],
+        backgroundColor: "rgba(173, 128, 255, 0.3)",
+        borderColor: "rgba(173, 128, 255, 0.7)",
+        borderWidth: 1,
+      },
+    ],
+  },
+  options: {},
+});
+updateChart();
+function updateChart() {
+  dataPoints = [];
+  fetch("https://canvasjs.com/services/data/datapoints.php", {
+    cache: "no-cache",
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      for (var i = 0; i < data.length; i++) {
+        dataPoints.push({ x: data[i][0], y: parseInt(data[i][1]) });
+      }
+      chart.data.labels = dataPoints.map((d) => d.x);
+      chart.data.datasets[0].data = dataPoints.map((d) => d.y);
+      chart.update();
+      setTimeout(function () {
+        updateChart();
+      }, 1000);
+    });
+}
