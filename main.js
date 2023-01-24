@@ -1,3 +1,5 @@
+import Chart from 'chart.js/auto'
+
 ////////////// Check if JavaScript is enabled, if not hide the chart
 if (!(window.Promise && window.fetch)) {
   let chart = document.getElementById("myChart");
